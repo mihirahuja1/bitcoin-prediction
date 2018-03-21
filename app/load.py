@@ -27,13 +27,14 @@ word2index = load_offline('app/static/models/word_dict.pkl')
 def init_model():
 	lstm_model = load_model('app/static/models/lstm_1.h5') #cnn_model = load_model('app/static/models/cnn_1.h5')
 	perceptron_model = load_model('app/static/models/percept_1.h5') #cnn_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	bilstm_model = load_model('app/static/models/bilstm.h5')
 	lstm_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	perceptron_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	graph = tf.get_default_graph()
-	return lstm_model, perceptron_model, graph
+	return lstm_model, perceptron_model, bilstm_model, graph
 
 
-lmodel,  percep, graph = init_model()
+lmodel, percep, bilstm, graph = init_model()
 
 auth = tweepy.OAuthHandler('8cBEjwKgM262KDcoJExVPgfwU','Bp0Ij0IcUqUXLcIJOItHXSCOgwSIUp9gK4upWBVjdiORB5ucAH')
 auth.set_access_token('390663782-oBFE7dUk61hQ1cE5ljHIrtBgawdWXJitvxxxD2Ye','B21Ac6m4QF4piwpK4KMu9SMoiN6BshBh2Fc2Fj2jmps6o')
@@ -77,7 +78,9 @@ def predictor(query, c_sqlite, conn):
 		percept_out = percep.predict(np.expand_dims(pencode(query), axis=0))
 		lout = np.argmax(lout, axis=1) # cnn_out = np.argmax(cnn_out, axis=1)
 		percept_out=np.argmax(percept_out, axis=1)
-		var = [lout.tolist()[0],percept_out.tolist()[0]]
+		bilstm_out = bilstm.predict(lencode(query))
+		bilstm_out = np.argmax(bilstm_out, axis=1)
+		var = [lout.tolist()[0], percept_out.tolist()[0], bilstm_out.tolist()[0]]
 	#c.execute("INSERT INTO sentiments VALUES ('2006-01-05',1,5)")
 	c = c_sqlite
 	c.execute("INSERT INTO sentiments VALUES (?,?,?)", (get_date(),get_most_count(var),50))
@@ -101,7 +104,8 @@ def processing_results(query):
 			predict_list.append(p)
 
 	data = {'LSTM network': 0,
-			'Perceptron network':0
+			'Perceptron network':0,
+			'Bi-LSTM':0
 		}
 
     # overal per sentence
