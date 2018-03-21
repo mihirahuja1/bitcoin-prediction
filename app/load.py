@@ -9,9 +9,7 @@ import h5py
 import gc
 import sqlite3
 import datetime
-#sqlite.connect(":memory:", check_same_thread=False)
 
-#connect_args={'check_same_thread':False}
 
 
 def most_common(lst):

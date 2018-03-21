@@ -3,10 +3,10 @@ from ..load import processing_results, api
 import string
 import tweepy
 import re
-from exchanges.bitfinex import Bitfinex
+# from exchanges.bitfinex import Bitfinex
 
 
-BitPrice = Bitfinex().get_current_price()
+# BitPrice = Bitfinex().get_current_price()
 
 
 
