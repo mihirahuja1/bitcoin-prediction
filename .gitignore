@@ -2,4 +2,5 @@ __pycache__
 .idea
 .env
 app/uploads/
-aclImdb 
+aclImdb
+.DS_Store
