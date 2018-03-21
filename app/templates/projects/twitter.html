@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block content %}
+ <!--<div id="particles">
+  <div id="intro">-->
+	<div class="container">
+        <div class="col-md-10">
+            <h4 class="legend">Enter the topic name for retrieving tweets</h4>
+            <form method="post" action="{{ url_for('twitter.twitter') }}">
+                <input type="text" name="topic">
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+            {% if message %}
+                <div class="alert alert-danger warning">{{ message }}</div>
+            {% endif %}
+        </div>
+    </div>
+    {% if data %}
+		<h1>{{data[5]}}</h1>
+        {% if data[2] == 0 %}
+            <h5 class="overall">Overall sentiment : <span class="neg">Negative</span></h5>
+        {% elif data[2] == 1 %}
+            <h5 class="overall">Overall sentiment : <span class="neu">Neutral</span></h5>
+        {% else %}
+            <h5 class="overall">Overall sentiment : <span class="pos">Positive</span></h5>
+        {% endif %}
+        <div class="results">
+            <div class="aggregate-list">
+                <h5>Prediction Results</h5>
+                <ul class="result-list">
+                    {% for key, value in data[0].items() %}
+                        {% if value == 0 %}
+                            <li>{{ key }} - <span class="neg">Negative</span></li>
+                        {% elif value == 1 %}
+                            <li>{{ key }} - <span class="neu">Neutral</span></li>
+                        {% else %}
+                            <li>{{ key }} - <span class="pos">Positive</span></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <canvas id="barChart"></canvas>
+                <script>
+                    var ctx = document.getElementById("barChart").getContext('2d');
+                    ctx.canvas.width = 900;
+                    ctx.canvas.height = 300;
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ["Negative", "Neutral", "Positive"],
+                            datasets: [{
+                                label: '# of sentences with negative, neutral and positive sentiment',
+                                data: {{ data[1] }},
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ]
+                            }]
+                        },
+                        options: {
+                            maintainAspectRatio: true,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        stepSize: 5
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                </script>
+				
+				<canvas id="lineGraph"></canvas>
+                <script>
+                    var ctx = document.getElementById("lineGraph").getContext('2d');
+                    ctx.canvas.width = 900;
+                    ctx.canvas.height = 300;
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ["Time", "Price"],
+                            datasets: [{
+                                label: 'Price vs Time',
+                                data: [{
+									x: 10,
+									y: 20
+								}, {
+									x: 15,
+									y: 10
+								},{x:6,y:9}],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ]
+                            }]
+                        },
+                        options: {
+                            maintainAspectRatio: true,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        stepSize: 5
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                </script>
+				
+            </div>
+        </div>
+        <div class="text-list">
+            <h5>Prediction sentence by sentence (Total tweets - {{ data[4] }} )</h5>
+            <ul>
+                {% for line,sentiment in data[3] %}
+                    {% if sentiment == 0 %}
+                        <li>{{ line }} - <span class="neg">Negative</span></li>
+                    {% elif sentiment == 1 %}
+                        <li>{{ line }} - <span class="neu">Neutral</span></li>
+                    {% else %}
+                        <li>{{ line }} - <span class="pos">Positive</span></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+<!--  </div>
+</div>-->
+    
+{% endblock %}

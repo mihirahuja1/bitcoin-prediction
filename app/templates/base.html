@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Sentiment analysis</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+		  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+		  <!-- remember, jQuery is completely optional -->
+		  <!-- <script type='text/javascript' src='js/jquery-1.11.1.min.js'></script> -->
+		  <script type='text/javascript' src="{{url_for('static', filename='jquery.particleground.js')}}"></script>
+		  <script type='text/javascript' src="{{url_for('static', filename='demo.js')}}"></script>
+		  <link href="{{url_for('static', filename='style.css')}}" rel="stylesheet">
+		  <link href="{{ url_for('static',filename='style-2.css') }}" rel="stylesheet">
+		  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+        <!-- Latest compiled and minified CSS -->
+        
+    </head>
+    <body>
+      
+        {% block content %}{% endblock %}
+    </body>
+</html>
