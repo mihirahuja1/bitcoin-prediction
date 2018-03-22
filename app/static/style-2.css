@@ -60,9 +60,8 @@ html, body {
 }
 
 body {
-  background: #16a085;
+  background: #eaf1f0;
   font-family: 'Montserrat', sans-serif;
-  color: #fff;
   line-height: 1.3;
   -webkit-font-smoothing: antialiased;
 }
@@ -93,7 +92,6 @@ h1::after {
   content: '';
   width: 80px;
   display: block;
-  background: #fff;
   height: 10px;
   margin: 30px auto;
   line-height: 1.1;
@@ -105,13 +103,13 @@ p {
 .btn {
   display: inline-block;
   padding: 15px 30px;
-  border: 2px solid #fff;
+  border: 2px solid #116e11;
   text-transform: uppercase;
   letter-spacing: 0.015em;
   font-size: 18px;
   font-weight: 700;
   line-height: 1;
-  color: #fff;
+  color: #116e11;
   text-decoration: none;
   -webkit-transition: all 0.4s;
      -moz-transition: all 0.4s;
@@ -119,8 +117,8 @@ p {
           transition: all 0.4s;
 }
 .btn:hover {
-  color: #005544;
-  border-color: #005544;
+  color: #062a06;
+  border-color: #062a06;
 }
 
 @media only screen and (max-width: 1000px) {
