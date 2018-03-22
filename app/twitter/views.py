@@ -3,11 +3,8 @@ from ..load import processing_results, api
 import string
 import tweepy
 import re
-# from exchanges.bitfinex import Bitfinex
-
-
-# BitPrice = Bitfinex().get_current_price()
-
+import datetime
+from exchanges.coindesk import CoinDesk
 
 
 twitter_mod = Blueprint('twitter', __name__, template_folder='templates', static_folder='static')
@@ -24,7 +21,9 @@ def takeout_non_ascii(s):
 @twitter_mod.route('/twitter', methods=['GET', 'POST'])
 def twitter():
 	if request.method == 'POST':
-		
+		bitcoin_price = CoinDesk().get_historical_data_as_dict(
+			start=str(datetime.date.today()-datetime.timedelta(days=5)), 
+			end=str(datetime.date.today()))
 		tweets = []
 		for tweet in tweepy.Cursor(api.search, request.form['topic'], lang='en').items(100):
 			text =re.sub(r'http\S+', '', tweet.text)
@@ -40,7 +39,13 @@ def twitter():
 			tweets.append(text)
 		data, emotion_sents, score, line_sentiment, text, length = processing_results(tweets)
 
-		return render_template('projects/twitter.html', data=[data, emotion_sents, score, zip(text, line_sentiment), length, [200,300,400,500,600]])
+		bitcoin_price_list = []
+		date_list = []
+		for i in bitcoin_price:
+			bitcoin_price_list.append(float(bitcoin_price[i]))
+			date_list.append(i)
+		print(date_list)
+		return render_template('projects/twitter.html', data=[data, emotion_sents, score, zip(text, line_sentiment), length, date_list, bitcoin_price_list])
 	else:
 		return render_template('projects/twitter.html')
 
