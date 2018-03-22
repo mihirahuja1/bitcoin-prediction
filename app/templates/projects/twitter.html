@@ -80,34 +80,13 @@
                     var myChart = new Chart(ctx, {
                         type: 'line',
                         data: {
-                            labels: ["Time", "Price"],
+                            labels: [{% for i in data[5] %} '{{i}}', {% endfor %}],
                             datasets: [{
-                                label: 'Price vs Time',
-                                data: [{
-									x: 10,
-									y: 20
-								}, {
-									x: 15,
-									y: 10
-								},{x:6,y:9}],
+                                label: 'Price vs Time in USD',
+                                data: {{ data[6] }},
                                 backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)',
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 206, 86, 0.2)',
-                                    'rgba(255, 159, 64, 0.2)'
-                                ]
+                                    'rgb(75, 192, 192)' ]
                             }]
-                        },
-                        options: {
-                            maintainAspectRatio: true,
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                        stepSize: 5
-                                    }
-                                }]
-                            }
                         }
                     });
                 </script>
@@ -115,8 +94,8 @@
             </div>
         </div>
         <div class="text-list">
-            <h5>Prediction sentence by sentence (Total tweets - {{ data[4] }} )</h5>
-            <ul>
+            <h2>Prediction sentence by sentence (Total tweets - {{ data[4] }} )</h2>
+            <ul style="list-style: circle;">
                 {% for line,sentiment in data[3] %}
                     {% if sentiment == 0 %}
                         <li>{{ line }} - <span class="neg">Negative</span></li>
