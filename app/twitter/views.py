@@ -44,7 +44,7 @@ def twitter():
 		for i in bitcoin_price:
 			bitcoin_price_list.append(float(bitcoin_price[i]))
 			date_list.append(i)
-		print(date_list)
+		
 		return render_template('projects/twitter.html', data=[data, emotion_sents, score, zip(text, line_sentiment), length, date_list, bitcoin_price_list])
 	else:
 		return render_template('projects/twitter.html')
