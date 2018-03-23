@@ -17,10 +17,8 @@
     {% if data %}
         {% if data[2] == 0 %}
             <h5 class="overall">Overall sentiment : <span class="neg">Negative</span></h5>
-        {% elif data[2] == 1 %}
-            <h5 class="overall">Overall sentiment : <span class="neu">Neutral</span></h5>
         {% else %}
-            <h5 class="overall">Overall sentiment : <span class="pos">Positive</span></h5>
+            <h5 class="overall">Overall sentiment : <span class="neu">Positive</span></h5>
         {% endif %}
         <div class="results">
             <div class="aggregate-list">
@@ -29,10 +27,8 @@
                     {% for key, value in data[0].items() %}
                         {% if value == 0 %}
                             <li>{{ key }} - <span class="neg">Negative</span></li>
-                        {% elif value == 1 %}
-                            <li>{{ key }} - <span class="neu">Neutral</span></li>
                         {% else %}
-                            <li>{{ key }} - <span class="pos">Positive</span></li>
+                            <li>{{ key }} - <span class="neu">Positive</span></li>
                         {% endif %}
                     {% endfor %}
                 </ul>
