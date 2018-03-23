@@ -46,9 +46,9 @@
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: ["Negative", "Neutral", "Positive"],
+                            labels: ["Negative", "Positive"],
                             datasets: [{
-                                label: '# of sentences with negative, neutral and positive sentiment',
+                                label: '# of sentences with negative and positive sentiment',
                                 data: {{ data[1] }},
                                 backgroundColor: [
                                     'rgba(255, 99, 132, 0.2)',
@@ -99,10 +99,8 @@
                 {% for line,sentiment in data[3] %}
                     {% if sentiment == 0 %}
                         <li>{{ line }} - <span class="neg">Negative</span></li>
-                    {% elif sentiment == 1 %}
-                        <li>{{ line }} - <span class="neu">Neutral</span></li>
                     {% else %}
-                        <li>{{ line }} - <span class="pos">Positive</span></li>
+                        <li>{{ line }} - <span class="neu">Positive</span></li>
                     {% endif %}
                 {% endfor %}
             </ul>

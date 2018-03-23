@@ -81,7 +81,7 @@ def predictor(query, c_sqlite, conn):
 		bilstm_out = bilstm.predict(lencode(query))
 		bilstm_out = np.argmax(bilstm_out, axis=1)
 		var = [lout.tolist()[0], percept_out.tolist()[0], bilstm_out.tolist()[0]]
-	#c.execute("INSERT INTO sentiments VALUES ('2006-01-05',1,5)")
+
 	c = c_sqlite
 	c.execute("INSERT INTO sentiments VALUES (?,?,?)", (get_date(),get_most_count(var),50))
 	conn.commit()
@@ -117,14 +117,12 @@ def processing_results(query):
 
 	# all the sentences with 3 emotions
 	predict_list = predict_list.tolist()
-	emotion_sents = [0, 0, 0]
+	emotion_sents = [0, 0]
 	for p in predict_list:
 		if most_common(p) == 0:
 			emotion_sents[0] += 1
-		elif most_common(p) == 1:
-			emotion_sents[1] += 1
 		else:
-			emotion_sents[2] += 1
+			emotion_sents[1] += 1
 
 	# overall score
 	score = most_common(list(data.values()))
