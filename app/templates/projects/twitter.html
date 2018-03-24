@@ -60,7 +60,7 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                        stepSize: 5
+                                        stepSize: 10
                                     }
                                 }]
                             }
@@ -68,9 +68,9 @@
                     });
                 </script>
 				
-				<canvas id="lineGraph"></canvas>
+				<canvas id="lineGraph1"></canvas>
                 <script>
-                    var ctx = document.getElementById("lineGraph").getContext('2d');
+                    var ctx = document.getElementById("lineGraph1").getContext('2d');
                     ctx.canvas.width = 900;
                     ctx.canvas.height = 300;
                     var myChart = new Chart(ctx, {
@@ -87,6 +87,23 @@
                     });
                 </script>
 				
+                <canvas id="lineGraph2"></canvas>
+                <script>
+                    var ctx = document.getElementById("lineGraph2").getContext('2d');
+                    ctx.canvas.width = 900;
+                    ctx.canvas.height = 300;
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: [{% for i in data[7][0] %} '{{i}}', {% endfor %}],
+                            datasets: [{
+                                label: 'Sentiment forecast for last 5 days (in %)',
+                                data: {{data[7][1]}},
+                                backgroundColor: ['rgba(255, 159, 64, 0.2)']
+                            }]
+                        }
+                    });
+                </script>
             </div>
         </div>
         <div class="text-list">

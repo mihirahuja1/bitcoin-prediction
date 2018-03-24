@@ -6,7 +6,6 @@ from collections import Counter
 import tweepy
 import _pickle
 import h5py
-import gc
 import sqlite3
 import datetime
 
@@ -89,6 +88,16 @@ def predictor(query, c_sqlite, conn):
 	return var
 
 
+def get_db_results(c_sqlite):
+	c = c_sqlite
+	db_date_list = []
+	db_percent_list = []
+	for row in c.execute('SELECT timedate, SUM(case when sent=0 then 1 else 0 end) AS `negative`, SUM(case when sent=1 then 1 else 0 end) AS `positive`, COUNT(sent) AS `total` FROM sentiments GROUP BY timedate'):
+		db_date_list.append(row[0])
+		db_percent_list.append((row[2]/row[3])*100)
+	
+	return db_date_list, db_percent_list
+
 
 def processing_results(query):
 	conn = sqlite3.connect("app/static/tweet.db",check_same_thread=False)
@@ -126,6 +135,7 @@ def processing_results(query):
 
 	# overall score
 	score = most_common(list(data.values()))
-	gc.collect()
+	
+	db_date_list, db_percent_list = get_db_results(c)
 	conn.close()
-	return data, emotion_sents, score, line_sentiment, query, len(query)
+	return data, emotion_sents, score, line_sentiment, query, len(query), (db_date_list, db_percent_list)
