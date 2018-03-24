@@ -37,7 +37,7 @@ def twitter():
 			text = re.sub(r'@', '', text)
 			text = re.sub(r'#', '', text)
 			tweets.append(text)
-		data, emotion_sents, score, line_sentiment, text, length = processing_results(tweets)
+		data, emotion_sents, score, line_sentiment, text, length, db_data = processing_results(tweets)
 
 		bitcoin_price_list = []
 		date_list = []
@@ -45,7 +45,7 @@ def twitter():
 			bitcoin_price_list.append(float(bitcoin_price[i]))
 			date_list.append(i)
 		
-		return render_template('projects/twitter.html', data=[data, emotion_sents, score, zip(text, line_sentiment), length, date_list, bitcoin_price_list])
+		return render_template('projects/twitter.html', data=[data, emotion_sents, score, zip(text, line_sentiment), length, date_list, bitcoin_price_list, db_data])
 	else:
 		return render_template('projects/twitter.html')
 
