@@ -1,24 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
- <!--<div id="particles">
-  <div id="intro">-->
-	<div class="container">
-        <div class="col-md-10">
-            <h4 class="legend">Enter the topic name for retrieving tweets</h4>
-            <form method="post" action="{{ url_for('twitter.twitter') }}">
-                <input type="text" name="topic">
-                <input type="submit" value="Submit" class="btn btn-primary">
-            </form>
-            {% if message %}
-                <div class="alert alert-danger warning">{{ message }}</div>
-            {% endif %}
-        </div>
-    </div>
     {% if data %}
         {% if data[2] == 0 %}
-            <h5 class="overall">Overall sentiment : <span class="neg">Negative</span></h5>
+            <h5 style="margin-top: 50px;" class="overall">Overall sentiment : <span class="neg">Negative</span></h5>
         {% else %}
-            <h5 class="overall">Overall sentiment : <span class="neu">Positive</span></h5>
+            <h5 style="margin-top: 50px;" class="overall">Overall sentiment : <span class="neu">Positive</span></h5>
         {% endif %}
         <div class="results">
             <div class="aggregate-list">
@@ -107,7 +93,7 @@
             </div>
         </div>
         <div class="text-list">
-            <h2>Prediction sentence by sentence (Total tweets - {{ data[4] }} )</h2>
+            <h2 style="font-weight: bold">Sentence by sentence (Total tweets - {{ data[4] }} )</h2>
             <ul style="list-style: circle;">
                 {% for line,sentiment in data[3] %}
                     {% if sentiment == 0 %}
@@ -118,6 +104,50 @@
                 {% endfor %}
             </ul>
         </div>
+        {% else %}
+        <div style="margin-top: 100px;" class="container">
+            <div class="col-md-10">
+                <div class="loader"></div>
+                <h5 style="text-align: center; margin-top: 20px;">Retrieving tweets and performing sentiment analysis</h5>
+                <!-- <form id="tweet-form" method="post" action="{{ url_for('twitter.twitter') }}">
+                    <input type="text" name="topic">
+                    <input id="post-btn" type="submit" value="Submit" class="btn btn-primary">
+                </form> -->
+            </div>
+        </div>
+        <style>
+            .loader {
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #15181a;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                animation: spin 2s linear infinite;
+                margin: 0 auto;
+            }
+        
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                $.redirectPost("{{url_for('twitter.twitter')}}");
+            }
+
+            $.extend(
+                {
+                    redirectPost: function (location) {
+                        var form = '';
+                        $('<form action="' + location + '" method="POST">' + form + '</form>').appendTo($(document.body)).submit();
+                    }
+                });
+        </script>    
     {% endif %}
 <!--  </div>
 </div>-->
