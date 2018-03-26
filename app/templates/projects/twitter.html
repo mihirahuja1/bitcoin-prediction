@@ -2,9 +2,9 @@
 {% block content %}
     {% if data %}
         {% if data[2] == 0 %}
-            <h5 class="overall">Overall sentiment : <span class="neg">Negative</span></h5>
+            <h5 style="margin-top: 50px;" class="overall">Overall sentiment : <span class="neg">Negative</span></h5>
         {% else %}
-            <h5 class="overall">Overall sentiment : <span class="neu">Positive</span></h5>
+            <h5 style="margin-top: 50px;" class="overall">Overall sentiment : <span class="neu">Positive</span></h5>
         {% endif %}
         <div class="results">
             <div class="aggregate-list">
@@ -93,7 +93,7 @@
             </div>
         </div>
         <div class="text-list">
-            <h2>Prediction sentence by sentence (Total tweets - {{ data[4] }} )</h2>
+            <h2 style="font-weight: bold">Sentence by sentence (Total tweets - {{ data[4] }} )</h2>
             <ul style="list-style: circle;">
                 {% for line,sentiment in data[3] %}
                     {% if sentiment == 0 %}
