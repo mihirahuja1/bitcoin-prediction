@@ -20,12 +20,12 @@ def takeout_non_ascii(s):
 
 @twitter_mod.route('/twitter', methods=['GET', 'POST'])
 def twitter():
-	if request.method == 'POST':
+	if request.method == 'GET':
 		bitcoin_price = CoinDesk().get_historical_data_as_dict(
 			start=str(datetime.date.today()-datetime.timedelta(days=5)), 
 			end=str(datetime.date.today()))
 		tweets = []
-		for tweet in tweepy.Cursor(api.search, request.form['topic'], lang='en').items(100):
+		for tweet in tweepy.Cursor(api.search, 'bitcoin', lang='en').items(100):
 			text =re.sub(r'http\S+', '', tweet.text)
 			emoji_pattern = re.compile("["
 				u"\U0001F600-\U0001F64F"  # emoticons
