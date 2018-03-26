@@ -20,7 +20,7 @@ def takeout_non_ascii(s):
 
 @twitter_mod.route('/twitter', methods=['GET', 'POST'])
 def twitter():
-	if request.method == 'GET':
+	if request.method == 'POST':
 		bitcoin_price = CoinDesk().get_historical_data_as_dict(
 			start=str(datetime.date.today()-datetime.timedelta(days=5)), 
 			end=str(datetime.date.today()))
