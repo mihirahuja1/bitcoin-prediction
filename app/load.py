@@ -27,7 +27,7 @@ def init_model():
 	lstm_model = load_model('app/static/models/lstm_1.h5') 
 	cnn_model = load_model('app/static/models/cnn.h5')
 	perceptron_model = load_model('app/static/models/percept_1.h5') 
-	cnn_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	cnn_model.compile(loss='binary_crossentropy', optimizer='rsprop', metrics=['accuracy'])
 	bilstm_model = load_model('app/static/models/bilstm.h5')
 	lstm_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	perceptron_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
