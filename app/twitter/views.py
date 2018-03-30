@@ -25,6 +25,7 @@ def twitter(currency):
 		bitcoin_price = CoinDesk().get_historical_data_as_dict(
 			start=str(datetime.date.today()-datetime.timedelta(days=5)), 
 			end=str(datetime.date.today()))
+		current_price = CoinDesk().get_current_price(currency='USD')
 		tweets = []
 		for tweet in tweepy.Cursor(api.search, currency, lang='en').items(100):
 			text =re.sub(r'http\S+', '', tweet.text)
@@ -38,7 +39,7 @@ def twitter(currency):
 			text = re.sub(r'@', '', text)
 			text = re.sub(r'#', '', text)
 			tweets.append(text)
-		data, emotion_sents, score, line_sentiment, text, length, db_data = processing_results(tweets, currency)
+		data, emotion_sents, score, line_sentiment, text, length, db_data = processing_results(tweets, currency, float(current_price))
 
 		bitcoin_price_list = []
 		date_list = []

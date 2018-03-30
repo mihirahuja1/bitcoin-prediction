@@ -73,7 +73,7 @@ def get_date():
 	return str(d.today())
 	
 
-def predictor(query, c_sqlite, conn, currency):
+def predictor(query, c_sqlite, conn, currency, current_price):
 	with graph.as_default():
 		lout = lmodel.predict(lencode(query))
 		cnn_out = cnn.predict(lencode(query))
@@ -84,9 +84,9 @@ def predictor(query, c_sqlite, conn, currency):
 		bilstm_out = bilstm.predict(lencode(query))
 		bilstm_out = np.argmax(bilstm_out, axis=1)
 		var = [lout.tolist()[0], percept_out.tolist()[0], bilstm_out.tolist()[0], cnn_out.tolist()[0]]
-
+	
 	c = c_sqlite
-	c.execute("INSERT INTO sentiments VALUES (?,?,?,?)", (get_date(),get_most_count(var),0, currency))
+	c.execute("INSERT INTO sentiments VALUES (?,?,?,?)", (get_date(), get_most_count(var),current_price, currency))
 	conn.commit()
 
 	return var
@@ -104,7 +104,7 @@ def get_db_results(c_sqlite, currency):
 	return db_date_list, db_percent_list
 
 
-def processing_results(query, currency):
+def processing_results(query, currency, current_price):
 	conn = sqlite3.connect("app/static/tweet.db",check_same_thread=False)
 
 	c = conn.cursor()
@@ -113,13 +113,14 @@ def processing_results(query, currency):
 	line_sentiment = []
 	for t in query:
 		if not t == '':
-			p = predictor(t, c, conn, currency)
+			p = predictor(t, c, conn, currency, current_price)
 			line_sentiment.append(most_common(p))
 			predict_list.append(p)
 
 	data = {'LSTM network': 0,
 			'Perceptron network':0,
-			'Bi-LSTM':0
+			'Bi-LSTM':0,
+			'Convolutional Neural Network':0
 		}
 
     # overal per sentence
