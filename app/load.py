@@ -71,7 +71,7 @@ def get_date():
 	return str(d.today())
 	
 
-def predictor(query, c_sqlite, conn):
+def predictor(query, c_sqlite, conn, currency):
 	with graph.as_default():
 		lout = lmodel.predict(lencode(query)) #  cnn_out = cnn.predict(lencode(query))
 		percept_out = percep.predict(np.expand_dims(pencode(query), axis=0))
@@ -82,24 +82,25 @@ def predictor(query, c_sqlite, conn):
 		var = [lout.tolist()[0], percept_out.tolist()[0], bilstm_out.tolist()[0]]
 
 	c = c_sqlite
-	c.execute("INSERT INTO sentiments VALUES (?,?,?)", (get_date(),get_most_count(var),50))
+	c.execute("INSERT INTO sentiments VALUES (?,?,?,?)", (get_date(),get_most_count(var),50, currency))
 	conn.commit()
 
 	return var
 
 
-def get_db_results(c_sqlite):
+def get_db_results(c_sqlite, currency):
 	c = c_sqlite
 	db_date_list = []
 	db_percent_list = []
-	for row in c.execute('SELECT timedate, SUM(case when sent=0 then 1 else 0 end) AS `negative`, SUM(case when sent=1 then 1 else 0 end) AS `positive`, COUNT(sent) AS `total` FROM sentiments GROUP BY timedate'):
+	currency = currency
+	for row in c.execute('SELECT timedate, SUM(case when sent=0 then 1 else 0 end) AS `negative`, SUM(case when sent=1 then 1 else 0 end) AS `positive`, COUNT(sent) AS `total` FROM sentiments where currency=? GROUP BY timedate', [currency]):
 		db_date_list.append(row[0])
 		db_percent_list.append((row[2]/row[3])*100)
 	
 	return db_date_list, db_percent_list
 
 
-def processing_results(query):
+def processing_results(query, currency):
 	conn = sqlite3.connect("app/static/tweet.db",check_same_thread=False)
 
 	c = conn.cursor()
@@ -108,7 +109,7 @@ def processing_results(query):
 	line_sentiment = []
 	for t in query:
 		if not t == '':
-			p = predictor(t, c, conn)
+			p = predictor(t, c, conn, currency)
 			line_sentiment.append(most_common(p))
 			predict_list.append(p)
 
@@ -136,6 +137,6 @@ def processing_results(query):
 	# overall score
 	score = most_common(list(data.values()))
 	
-	db_date_list, db_percent_list = get_db_results(c)
+	db_date_list, db_percent_list = get_db_results(c, currency)
 	conn.close()
 	return data, emotion_sents, score, line_sentiment, query, len(query), (db_date_list, db_percent_list)
