@@ -5,10 +5,10 @@
   <div id="intro">
     <h1>CryptoHound</h1>
     <p>Deep Learning to predict Crypto currency</p>
-    <a href="{{url_for('twitter.twitter')}}" id="bitcoin-btn" class="btn">Bitcoin</a>
-	<a href="https://github.com/jnicol/particleground/archive/master.zip" class="btn">Ethereum</a>
-	<a href="https://github.com/jnicol/particleground/archive/master.zip" class="btn">Monero</a>
-	<a href="https://github.com/jnicol/particleground/archive/master.zip" class="btn">Ripple</a>
+    <a href="{{url_for('twitter.twitter', currency='btc')}}" id="bitcoin-btn" class="btn">Bitcoin</a>
+	<a href="{{url_for('twitter.twitter', currency='eth')}}" class="btn">Ethereum</a>
+	<a href="{{url_for('twitter.twitter', currency='xmr')}}" class="btn">Monero</a>
+	<a href="{{url_for('twitter.twitter', currency='xrp')}}" class="btn">Ripple</a>
 	<a href="{{url_for('team.team')}}" class="btn">View Team</a>
 	<br>
 	<br>

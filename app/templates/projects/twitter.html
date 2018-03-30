@@ -109,10 +109,6 @@
             <div class="col-md-10">
                 <div class="loader"></div>
                 <h5 style="text-align: center; margin-top: 20px;">Retrieving tweets and performing sentiment analysis</h5>
-                <!-- <form id="tweet-form" method="post" action="{{ url_for('twitter.twitter') }}">
-                    <input type="text" name="topic">
-                    <input id="post-btn" type="submit" value="Submit" class="btn btn-primary">
-                </form> -->
             </div>
         </div>
         <style>
@@ -137,7 +133,8 @@
         </style>
         <script>
             window.onload = function () {
-                $.redirectPost("{{url_for('twitter.twitter')}}");
+                curr = document.location.href.split('/')[4];
+                $.redirectPost('/twitter/'+curr);
             }
 
             $.extend(
