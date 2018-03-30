@@ -65,6 +65,17 @@ def lencode(text):
     return padded_seq
 
 
+def lencode_cnn(text):
+    vector = []
+    for word in text.split(' '):
+        try:
+            vector.append(word2index[word])
+        except KeyError:
+            vector.append(0)
+    padded_seq = pad_sequences([vector], maxlen=200, value=0.)
+    return padded_seq
+
+
 def get_most_count(x):
     return Counter(x).most_common()[0][0]
 
@@ -76,7 +87,7 @@ def get_date():
 def predictor(query, c_sqlite, conn, currency, current_price):
 	with graph.as_default():
 		lout = lmodel.predict(lencode(query))
-		cnn_out = cnn.predict(lencode(query))
+		cnn_out = cnn.predict(lencode_cnn(query))
 		percept_out = percep.predict(np.expand_dims(pencode(query), axis=0))
 		lout = np.argmax(lout, axis=1)
 		cnn_out = np.argmax(cnn_out, axis=1)
