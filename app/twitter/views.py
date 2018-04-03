@@ -5,6 +5,7 @@ import tweepy
 import re
 import datetime
 from exchanges.coindesk import CoinDesk
+import praw
 
 
 twitter_mod = Blueprint('twitter', __name__, template_folder='templates', static_folder='static')
@@ -26,6 +27,9 @@ def twitter(currency):
 			start=str(datetime.date.today()-datetime.timedelta(days=5)), 
 			end=str(datetime.date.today()))
 		current_price = CoinDesk().get_current_price(currency='USD')
+		reddit = praw.Reddit(client_id='mWpIWEPU8TrUcg',
+							client_secret ='SoWgmjqXuZtWNAkdxqDZn564FzQ' ,
+							username='mihirahuja',user_agent='btcpred')
 		tweets = []
 		for tweet in tweepy.Cursor(api.search, currency, lang='en').items(100):
 			text =re.sub(r'http\S+', '', tweet.text)
@@ -39,6 +43,12 @@ def twitter(currency):
 			text = re.sub(r'@', '', text)
 			text = re.sub(r'#', '', text)
 			tweets.append(text)
+		
+		subreddit = reddit.subreddit(currency)
+		top_bitcoin = subreddit.top(limit = 1000,time_filter='day')
+		for sub in top_bitcoin:
+			tweets.append(sub.title)
+		
 		data, emotion_sents, score, line_sentiment, text, length, db_data = processing_results(tweets, currency, float(current_price))
 
 		bitcoin_price_list = []
